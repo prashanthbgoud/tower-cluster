@@ -2,6 +2,8 @@
 
 # This file should be encrypted with ansible-vault and contain a complex password and valid license
 
+# Ensure that "elua_accepted" : "true", exists as the first line, as this may not appear in your license json
+
 vault_tower_pass: your_password 
 vault_tower_lic: {"eula_accepted" : "true",
     "company_name": "", 
