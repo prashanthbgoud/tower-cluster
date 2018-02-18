@@ -1,0 +1,14 @@
+---
+tower_nodes:
+  - tower-node1
+  - tower-node2
+  - tower-node3
+
+tower_db: tower-db
+
+tower_isolated_nodes: true # true|false
+
+tower_isolated_groups:
+  dmz:
+    nodes:
+      - tower-isolated-node1

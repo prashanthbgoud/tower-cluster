@@ -1,0 +1,57 @@
+---
+
+- name: TOWER | filesystems | Make sure LVM is installed
+  yum:
+    name: lvm2
+    state: installed
+  tags:
+  - tower_filesystems
+
+- name: TOWER | filesystems | check what physical disks exist
+  command: pvs --all
+  changed_when: false
+  register: pv_list 
+  tags:
+    - tower_filesystems
+
+- name: TOWER | filesystems | bail out if our target disk is not available
+  fail:
+    msg: "Computer says NO! Cannot find target disk for satellite installation. Check yo 'pv_name' variable"
+  when: pv_name not in pv_list.stdout
+  tags:
+    - tower_filesystems
+
+- name: TOWER | filesystems | Create Volume Group
+  lvg:
+    vg: "{{ vg_name }}"
+    pvs: "{{ pv_name }}"
+    pesize: "{{ pe_size }}"
+  tags:
+  - tower_filesystems
+
+- name: TOWER | filesystems | Create Logical Volumes
+  lvol:
+    vg: "{{ vg_name }}"
+    lv: "{{ item.value.lv_name }}"
+    size: "{{ item.value.size_gb }}G"
+  with_dict: "{{ tower_volumes }}"
+  tags:
+  - tower_filesystems
+
+- name: TOWER | filesystems | Create Filesystems
+  filesystem:
+    fstype: xfs
+    dev: "/dev/mapper/{{ vg_name }}-{{ item.value.lv_name }}"
+  with_dict: "{{ tower_volumes }}"
+  tags:
+  - tower_filesystems
+
+- name: TOWER | filesystems | Mount Filesystems
+  mount:
+    path: "{{ item.value.mount_point }}"
+    src: "/dev/mapper/{{ vg_name }}-{{ item.value.lv_name }}"
+    fstype: xfs
+    state: mounted
+  with_dict: "{{ tower_volumes }}"
+  tags:
+  - tower_filesystems

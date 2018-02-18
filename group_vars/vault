@@ -1,0 +1,17 @@
+---
+
+# This file should be encrypted with ansible-vault and contain a complex password and valid license
+
+vault_tower_pass: your_password 
+vault_tower_lic: {"eula_accepted" : "true",
+    "company_name": "", 
+    "contact_email": "", 
+    "contact_name": "", 
+    "hostname": "", 
+    "instance_count": , 
+    "license_date": , 
+    "license_key": "", 
+    "license_type": "", 
+    "subscription_name": "", 
+    "trial": 
+   }

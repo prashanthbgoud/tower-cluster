@@ -1,0 +1,12 @@
+---
+
+vg_name: tower_vg
+pe_size: 1024
+pv_name: /dev/vdb
+
+tower_volumes:
+  postgresql: 
+    lv_name: psql_lv
+    mount_point: /var/lib/pgsql/9.6/data 
+    size_gb: 15 
+    fs_type: xfs

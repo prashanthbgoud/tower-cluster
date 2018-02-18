@@ -1,0 +1,42 @@
+[tower]
+{% for value in tower_nodes -%}
+{{ value }}
+{% endfor %}
+
+[database]
+{{ tower_db }}
+
+{% if tower_isolated_nodes %}
+{% for items in tower_isolated_groups %}
+[isolated_group_{{ item.key }}]
+{% for node in item.value.nodes %}
+{{ node }}
+{% endfor %}
+{% endfor %}
+{% endif %}
+
+{% if tower_isolated_nodes %}
+{% for items in tower_isolated_groups %}
+[isolated_group_{{ item.key }}:vars]
+controller=tower
+{% endfor %}
+{% endif %}
+
+[all:vars]
+admin_password='{{ vault_tower_pass }}'
+
+pg_host='{{ tower_db }}'
+pg_port='5432'
+
+pg_database='awx'
+pg_username='awx'
+pg_password='{{ vault_tower_pass }}'
+
+rabbitmq_port=5672
+rabbitmq_vhost=tower
+rabbitmq_username=tower
+rabbitmq_password='{{ vault_tower_pass }}'
+rabbitmq_cookie=cookiemonster
+
+# Needs to be true for fqdns and ip addresses
+rabbitmq_use_long_name=false

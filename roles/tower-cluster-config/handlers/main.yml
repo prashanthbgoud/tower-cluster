@@ -1,0 +1,4 @@
+---
+
+- name: restart tower
+  command: ansible-tower-service restart

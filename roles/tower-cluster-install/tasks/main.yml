@@ -1,0 +1,53 @@
+---
+- name: TOWER | install | get tar for ansibletower
+  get_url:
+    url: https://releases.ansible.com/ansible-tower/setup-bundle/ansible-tower-setup-bundle-latest.el7.tar.gz
+    dest: /tmp/ansible-tower-setup-bundle.tar.gz
+  tags:
+  - towerinstall
+
+- name: TOWER | install | untar /tmp/ansible-tower-setup-bundle.tar.gz
+  unarchive:
+    src: /tmp/ansible-tower-setup-bundle.tar.gz
+    dest: /tmp/
+    remote_src: true
+    owner: root
+  tags:
+  - towerinstall
+
+- name: TOWER | install | Identify the tower installation directory
+  find:
+    paths: /tmp
+    recurse: no
+    file_type: directory
+    patterns: "^ansible-tower-setup-"
+    use_regex: yes
+  register: tower_install_dir
+  tags:
+  - inventorytemplate
+  - towerinstall
+
+- name: TOWER | install | copy inventory to setup folder - with isolated nodes
+  template:
+    src: templates/towerinventorysetup.j2
+    dest: "{{ tower_install_dir.files[0].path }}/inventory"
+  with_dict: "{{ tower_isolated_groups }}"
+  when: tower_isolated_nodes
+  tags:
+  - inventorytemplate
+  - towerinstall
+
+- name: TOWER | install | copy inventory to setup folder - without isolated nodes
+  template:
+    src: templates/towerinventorysetup.j2
+    dest: "{{ tower_install_dir.files[0].path }}/inventory"
+  when: not tower_isolated_nodes
+  tags:
+  - inventorytemplate
+  - towerinstall
+
+- name: TOWER | install | execute the tower installation
+  command: "{{ tower_install_dir.files[0].path}}/setup.sh"
+  register: towerinstall
+  tags:
+  - towerinstall
