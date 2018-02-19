@@ -14,9 +14,11 @@ This has been tested on Tower 3.2.2.
 
 ## Certificates
   - If you are using self signed certificates update the following locations with your certificates
+    ```
     ./roles/tower-cluster-config/files/tower.cert
     ./roles/tower-cluster-config/files/tower.key
     ./roles/tower-haproxy/files/tower.pem
+    ```
 
 ## ./group_vars/tower
 
