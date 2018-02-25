@@ -16,6 +16,7 @@ This has been tested on Tower 3.2.2.
 ## Certificates
 
   - If you are using self signed certificates update the following locations with your certificates
+
     ```sh
     ./roles/tower-cluster-config/files/tower.cert
     ./roles/tower-cluster-config/files/tower.key
@@ -24,6 +25,7 @@ This has been tested on Tower 3.2.2.
     ./roles/tower-cluster-config/files/tower.key
     ./roles/tower-haproxy/files/tower.pem
    ```
+
 ## ./group_vars/tower
 
   - tower_nodes is a list of nodes which will be part of the "tower" node group. This can be a single node.
@@ -48,6 +50,7 @@ This has been tested on Tower 3.2.2.
  - pv_name: this is device name of the blank disk
 
 # Running the playbook
+
 Run the playbook as per the below.
 ```sh
 $ ansible-playbook -i inventory deploy_tower.yml --ask-vault-pass --ask-pass --ask-become-pass
