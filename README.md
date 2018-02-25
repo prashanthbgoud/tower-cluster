@@ -14,22 +14,15 @@ This has been tested on Tower 3.2.2.
 
 ## Certificates
   - If you are using self signed certificates update the following locations with your certificates
-<<<<<<< HEAD
     ```
     ./roles/tower-cluster-config/files/tower.cert
     ./roles/tower-cluster-config/files/tower.key
     ./roles/tower-haproxy/files/tower.pem
-    ```
-=======
-  ```sh
     ./roles/tower-cluster-config/files/tower.cert
     ./roles/tower-cluster-config/files/tower.key
     ./roles/tower-haproxy/files/tower.pem
-```
->>>>>>> 7d82566790d7d8c87fea462d7b42f5db95f026ba
-
+   ```
 ## ./group_vars/tower
-
   - tower_nodes is a list of nodes which will be part of the "tower" node group. This can be a single node.
   - tower_db is the nominated database node which must have a second disk assigned for the tower DB volume group
   - The group_vars/vault file is encrypted with ansible vault to protect your license and admin password
@@ -39,14 +32,12 @@ This has been tested on Tower 3.2.2.
   - The variables for keepalived vip_addresses and vip_interface need to be set such that hapxory can be configured for failover.
 
 ## ./group_vars/vault
-
   - Fill out the file with the tower admin password you wish to use which is vault_tower_pass
   - Obtain a valid tower license and assign it to vault_tower_lic
   - Add eula_accepted" : "true" to the top of the license json as this may not be there initially
   - Encrypt this file with ansible-vault when finished (ansible-vault encrypt vault)
  
 ## ./roles/tower-db-filesystems/vars/main.yml
-
  - vg_name: this is the name of the volume group
  - pe_size: this is the patition size of your volume group
  - pv_name: this is device name of the blank disk
