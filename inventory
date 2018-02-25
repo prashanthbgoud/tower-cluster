@@ -6,8 +6,12 @@ tower-node3 ansible_host=192.168.122.203
 [tower_isolated_nodes]
 tower-isolated-node1 ansible_host=192.168.122.204
 
-[tower_db]
-tower-db ansible_host=192.168.122.210
+[tower_db_primary]
+tower-db-pri ansible_host=192.168.122.210
+
+[tower_db_secondary]
+tower-db-sec ansible_host=192.168.122.211
 
 [tower_lb]
-tower-haproxy ansible_host=192.168.122.220
+tower-haproxy-pri ansible_host=192.168.122.221 vrrp_state=MASTER
+tower-haproxy-sec ansible_host=192.168.122.222 vrrp_state=BACKUP

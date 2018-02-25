@@ -28,6 +28,7 @@ This has been tested on Tower 3.2.2.
   - If you want isolated nodes set tower_isolated_nodes to true
   - If tower_isolated_nodes is true, set out your node groups and the isolated nodes contained in these groups under tower_isolated_groups.
   - These names must match the inventory file
+  - The variables for keepalived vip_addresses and vip_interface need to be set such that hapxory can be configured for failover.
 
 ## ./group_vars/vault
 

@@ -25,14 +25,24 @@ Vagrant.configure("2") do |config|
         vmconfig.vm.hostname = 'tower-isolated-node1'
     end
 
-    config.vm.define 'tower-db' do |vmconfig|
+    config.vm.define 'tower-db-pri' do |vmconfig|
         vmconfig.vm.network :private_network, ip: '192.168.122.210'
-        vmconfig.vm.hostname = 'tower-db'
+        vmconfig.vm.hostname = 'tower-db-pri'
     end
 
-    config.vm.define 'tower-haproxy' do |vmconfig|
-        vmconfig.vm.network :private_network, ip: '192.168.122.220'
-        vmconfig.vm.hostname = 'tower-haproxy'
+    config.vm.define 'tower-db-sec' do |vmconfig|
+        vmconfig.vm.network :private_network, ip: '192.168.122.211'
+        vmconfig.vm.hostname = 'tower-db-sec'
+    end
+
+    config.vm.define 'tower-haproxy-pri' do |vmconfig|
+        vmconfig.vm.network :private_network, ip: '192.168.122.221'
+        vmconfig.vm.hostname = 'tower-haproxy-pri'
+    end
+
+    config.vm.define 'tower-haproxy-sec' do |vmconfig|
+        vmconfig.vm.network :private_network, ip: '192.168.122.222'
+        vmconfig.vm.hostname = 'tower-haproxy-pri'
     end
 
    config.vm.provider "libvirt" do |kvm|
@@ -50,8 +60,10 @@ Vagrant.configure("2") do |config|
      echo 192.168.122.201 tower-node1 >> /etc/hosts
      echo 192.168.122.202 tower-node2 >> /etc/hosts
      echo 192.168.122.203 tower-node3 >> /etc/hosts
-     echo 192.168.122.210 tower-db >> /etc/hosts
-     echo 192.168.122.220 tower-haproxy >> /etc/hosts
+     echo 192.168.122.210 tower-db-pri >> /etc/hosts
+     echo 192.168.122.211 tower-db-sec >> /etc/hosts
+     echo 192.168.122.221 tower-haproxy-pri >> /etc/hosts
+     echo 192.168.122.222 tower-haproxy-sec >> /etc/hosts
      echo 192.168.122.204 tower-isolated-node1
    SHELL
 end
