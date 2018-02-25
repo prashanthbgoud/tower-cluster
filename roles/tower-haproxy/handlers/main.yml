@@ -1,5 +1,10 @@
 ---
 - name: restart haproxy
-  service: 
+  service:
     name: haproxy
+    state: restarted
+
+- name: restart keepalived
+  service:
+    name: keepalived
     state: restarted

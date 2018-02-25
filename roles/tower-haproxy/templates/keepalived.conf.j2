@@ -1,0 +1,34 @@
+vrrp_script chk_haproxy {
+	script "pidof haproxy"
+	interval 5
+}
+
+vrrp_instance V1_1 {
+	interface eth0
+	state {{ vrrp_state }}
+	virtual_router_id {{ router_id }}
+{% if vrrp_state == 'MASTER' %}
+  unicast_src_ip {{ hostvars[groups['tower_lb'][0]]['ansible_eth0']['ipv4']['address'] }}
+  unicast_peer {
+	  {{ hostvars[groups['tower_lb'][1]]['ansible_eth0']['ipv4']['address'] }}
+  }
+{% elif vrrp_state == 'BACKUP' %}
+  unicast_src_ip {{ hostvars[groups['tower_lb'][1]]['ansible_eth0']['ipv4']['address'] }}
+  unicast_peer {
+	  {{ hostvars[groups['tower_lb'][0]]['ansible_eth0']['ipv4']['address'] }}
+  }
+{% endif %}
+{% if vrrp_state == 'MASTER' %}
+	priority 101
+{% elif vrrp_state == 'BACKUP' %}
+	primority 100
+{% endif %}
+	virtual_ipaddress {
+		{% for value in vip_addresses -%}
+		{{ value }}
+		{% endfor %}
+  }
+	track_script {
+		chk_haproxy
+	}
+}
