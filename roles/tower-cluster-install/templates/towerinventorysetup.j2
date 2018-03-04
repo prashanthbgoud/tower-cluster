@@ -6,6 +6,7 @@
 {% if tower_db_secondary %}
 [database]
 {{ tower_db_primary }} pgsqlrep_role=master
+
 [database_replica]
 {{ tower_db_secondary }} pgsqlrep_role=replica
 {% else %}
@@ -38,6 +39,7 @@ pg_port='5432'
 pg_database='awx'
 pg_username='awx'
 pg_password='{{ vault_tower_pass }}'
+pgsqlrep_password=''{{ vault_tower_pass }}'
 
 rabbitmq_port=5672
 rabbitmq_vhost=tower

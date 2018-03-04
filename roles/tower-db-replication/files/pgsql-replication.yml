@@ -70,7 +70,6 @@
   vars:
     pgsqlrep_master_address: "{{ hostvars[groups[pgsqlrep_group_name_master][0]].ansible_all_ipv4_addresses[-1] }}"
     pgsqlrep_replica_address: "{{ hostvars[groups[pgsqlrep_group_name][0]].ansible_all_ipv4_addresses[-1] }}"
-    pgsqlrep_password: redhat123
 
   tasks:
     - import_role:
@@ -82,7 +81,6 @@
   vars:
     pgsqlrep_master_address: "{{ hostvars[groups[pgsqlrep_group_name_master][0]].ansible_all_ipv4_addresses[-1] }}"
     pgsqlrep_replica_address: "{{ hostvars[groups[pgsqlrep_group_name][0]].ansible_all_ipv4_addresses[-1] }}"
-    pgsqlrep_password: redhat123
 
   tasks:
     - import_role:
