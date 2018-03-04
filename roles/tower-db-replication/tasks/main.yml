@@ -28,5 +28,7 @@
 
 - name: TOWER | setup PostgreSQL replication | run the playbook to setup the replication
   shell: ansible-playbook -b -i inventory pgsql-replication.yml
+  args:
+    chdir: "{{ tower_install_dir.files[0].path }}"
   tags:
    - tower_replication
