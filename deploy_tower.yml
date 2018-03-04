@@ -1,6 +1,7 @@
 ---
 
-- hosts: tower_db_primary
+- name: TOWER | pre-tasks
+  hosts: tower_db_primary
   become: true
   gather_facts: false
   tasks:
@@ -11,6 +12,8 @@
       generate_ssh_key: yes
       ssh_key_bits: 2048
       ssh_key_file: .ssh/id_rsa
+    tags:
+     - always
 
   - name: TOWER | pre-tasks | Grab the contents of the tower db server public key
     fetch:
@@ -18,8 +21,11 @@
       dest: /tmp/towerdbkey.pub
       flat: yes
     changed_when: false
+    tags:
+     - always
 
-- hosts: tower_nodes,tower_db*,tower_isolated_nodes
+- name: TOWER | pre-tasks
+  hosts: tower_nodes,tower_db*,tower_isolated_nodes
   become: true
   become_user: root
   gather_facts: false
@@ -30,13 +36,17 @@
       user: root
       state: present
       key: "{{ lookup('file', '/tmp/towerdbkey.pub') }}"
+    tags:
+     - always
 
-- hosts: tower_db_primary,tower_db_secondary
+- name: TOWER | filesystems 
+  hosts: tower_db_primary,tower_db_secondary
   become: true
   roles:
     - tower-db-filesystems
 
-- hosts: tower_db_primary
+- name: TOWER | installation 
+  hosts: tower_db_primary
   become: true
   vars_files:
     - "group_vars/tower"
@@ -46,7 +56,8 @@
   roles:
     - tower-cluster-install
 
-- hosts: tower_nodes
+- name: TOWER | configuration    
+  hosts: tower_nodes
   become: true
   vars_files:
     - "group_vars/tower"
@@ -54,17 +65,20 @@
   roles:
    - tower-cluster-config
 
-- hosts: tower_db_secondary
-  become: true
-  vars_files:
-    - "group_vars/tower"
-    - "group_vars/vault"
-  roles:
-    - tower-db-replication
-
-- hosts: tower_lb
+- name: TOWER | setup pair of load balancers 
+  hosts: tower_lb
   become: true
   vars_files:
     - "group_vars/tower"
   roles:
     - tower-haproxy
+
+- name: TOWER | setup PostgreSQL replication
+  hosts: tower_db_primary
+  become: true
+  vars_files:
+    - "group_vars/tower"
+  environment:
+    ANSIBLE_HOST_KEY_CHECKING: False
+  roles:
+    - tower-db-replication
