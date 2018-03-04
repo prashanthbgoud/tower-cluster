@@ -3,8 +3,15 @@
 {{ value }}
 {% endfor %}
 
+{% if tower_db_secondary %}
 [database]
-{{ tower_db }}
+{{ tower_db_primary }} pgsqlrep_role=master
+[database_replica]
+{{ tower_db_secondary }} pgsqlrep_role=replica
+{% else %}
+[database]
+{{ tower_db_primary }}
+{% endif %}
 
 {% if tower_isolated_nodes %}
 {% for items in tower_isolated_groups %}
@@ -25,7 +32,7 @@ controller=tower
 [all:vars]
 admin_password='{{ vault_tower_pass }}'
 
-pg_host='{{ tower_db }}'
+pg_host='{{ tower_db_primary }}'
 pg_port='5432'
 
 pg_database='awx'
