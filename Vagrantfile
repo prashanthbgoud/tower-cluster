@@ -60,16 +60,10 @@ Vagrant.configure("2") do |config|
      echo 192.168.122.201 tower-node1 >> /etc/hosts
      echo 192.168.122.202 tower-node2 >> /etc/hosts
      echo 192.168.122.203 tower-node3 >> /etc/hosts
-<<<<<<< HEAD
      echo 192.168.122.210 tower-db-pri >> /etc/hosts
      echo 192.168.122.211 tower-db-sec >> /etc/hosts
      echo 192.168.122.221 tower-haproxy-pri >> /etc/hosts
      echo 192.168.122.222 tower-haproxy-sec >> /etc/hosts
-     echo 192.168.122.204 tower-isolated-node1
-=======
-     echo 192.168.122.210 tower-db >> /etc/hosts
-     echo 192.168.122.220 tower-haproxy >> /etc/hosts
      echo 192.168.122.204 tower-isolated-node1 >> /etc/hosts
->>>>>>> 7d82566790d7d8c87fea462d7b42f5db95f026ba
    SHELL
 end

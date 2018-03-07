@@ -7,10 +7,10 @@ tower-node3 ansible_host=192.168.122.203
 tower-isolated-node1 ansible_host=192.168.122.204
 
 [tower_db_primary]
-tower-db-pri ansible_host=192.168.122.210
+tower-db-pri ansible_host=192.168.122.210 pgsqlrep_role=master
 
 [tower_db_secondary]
-tower-db-sec ansible_host=192.168.122.211
+tower-db-sec ansible_host=192.168.122.211 pgsqlrep_role=replica
 
 [tower_lb]
 tower-haproxy-pri ansible_host=192.168.122.221 vrrp_state=MASTER
